@@ -6,6 +6,7 @@ import java.nio.file.Paths;
 import java.util.Arrays;
 import java.util.List;
 
+import com.jsonknights.gdg2019.domain.ResultDto;
 import com.jsonknights.gdg2019.domain.SourceDto;
 import org.apache.commons.lang3.tuple.Pair;
 import org.zeroturnaround.zip.ZipUtil;
@@ -32,8 +33,9 @@ public class Main {
             List<SourceDto> sourceDtos = inOutManager.readSource();
 
             //todo
+            final ResultDto resultDto = new ResultDto();
 
-            inOutManager.submitResult();
+            inOutManager.submitResult(resultDto);
         }
     }
 
