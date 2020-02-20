@@ -1,11 +1,12 @@
 package com.jsonknights.gdg2019.domain;
 
+import lombok.Value;
+
 import java.util.List;
 
-import lombok.Data;
-import lombok.RequiredArgsConstructor;
-
-@Data
+@Value
 public class ResultDto {
-//    private final List<Slide> slides;
+    public int countOfLibrariesToSignUp;
+
+    public List<LibrarySubmission> librarySubmissions;
 }

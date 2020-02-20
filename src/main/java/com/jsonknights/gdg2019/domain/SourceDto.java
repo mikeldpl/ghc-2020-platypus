@@ -1,14 +1,15 @@
 package com.jsonknights.gdg2019.domain;
 
-import java.util.Set;
+import lombok.Value;
 
-import lombok.Builder;
-import lombok.Data;
+import java.util.List;
 
-@Data
-@Builder
+@Value
 public class SourceDto {
-//    private int index;
-//    private boolean horizontal;
-//    private Set<String> tags;
+    public int numberOfBooks;
+    public int numberOfLibraries;
+    public int numberOfDaysForScanning;
+    public int[] scoresOfTheBook;
+
+    public List<Library> libraries;
 }
