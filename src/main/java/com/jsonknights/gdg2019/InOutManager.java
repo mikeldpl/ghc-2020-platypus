@@ -68,6 +68,7 @@ public class InOutManager {
                     .collect(Collectors.toList());
             libraries.add(
                     Library.builder()
+                            .index(i / 2)
                             .numberOfBooks(libraryInfo.get(0))
                             .timeToSignUpDays(libraryInfo.get(1))
                             .numberOfBooksShippedPerDay(libraryInfo.get(2))
