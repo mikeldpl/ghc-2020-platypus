@@ -44,36 +44,44 @@ public class InOutManager {
         if (strings.size() <= 1) {
             throw new IllegalArgumentException("File contains incorrect count of lines");
         }
-        int[] taskRestrictions = parseNumbers(strings.remove(0));
-        int[] bookScores = parseNumbers(strings.remove(0));
+        List<Integer> taskRestrictions = parseNumbers(strings.remove(0));
+        List<Integer> bookScores = parseNumbers(strings.remove(0));
+        List<Book> books = new ArrayList<>();
 
-        List<Library> libraries = new ArrayList<>();
-        for (int i = 0; i < strings.size() / 2; i += 2) {
-            int[] libraryInfo = parseNumbers(strings.get(i));
-            List<Book> books = Arrays.stream(parseNumbers(strings.get(i + 1)))
-                    .mapToObj(index -> new Book(index, bookScores[index]))
-                    .collect(Collectors.toList());
-            libraries.add(new Library(
-                    libraryInfo[0],
-                    libraryInfo[1],
-                    libraryInfo[2],
-                    books
-            ));
+        for (int i = 0; i < bookScores.size(); i++) {
+            books.add(Book.builder().index(i).score(bookScores.get(i)).build());
         }
 
-        return new SourceDto(
-                taskRestrictions[0],
-                taskRestrictions[1],
-                taskRestrictions[2],
-                bookScores,
-                libraries
-        );
+        List<Library> libraries = new ArrayList<>();
+        for (int i = 0; i < strings.size(); i += 2) {
+            List<Integer> libraryInfo = parseNumbers(strings.get(i));
+            List<Book> libBooks = parseNumbers(strings.get(i + 1))
+                    .stream()
+                    .map(books::get)
+                    .collect(Collectors.toList());
+            libraries.add(
+                    Library.builder()
+                            .numberOfBooks(libraryInfo.get(0))
+                            .timeToSignUpDays(libraryInfo.get(1))
+                            .numberOfBooksShippedPerDay(libraryInfo.get(2))
+                            .books(libBooks)
+                            .build()
+            );
+        }
+
+        return SourceDto.builder()
+                .numberOfBooks(taskRestrictions.get(0))
+                .numberOfLibraries(taskRestrictions.get(1))
+                .numberOfDaysForScanning(taskRestrictions.get(2))
+                .books(books)
+                .libraries(libraries)
+                .build();
     }
 
-    public int[] parseNumbers(String string) {
+    public List<Integer> parseNumbers(String string) {
         return Arrays.stream(string.split(" "))
-                .mapToInt(Integer::parseInt)
-                .toArray();
+                .map(Integer::parseInt)
+                .collect(Collectors.toList());
     }
 
 //    private SourceDto parsePhoto(String line, int index) {

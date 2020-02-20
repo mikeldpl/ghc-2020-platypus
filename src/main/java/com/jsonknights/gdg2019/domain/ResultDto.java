@@ -1,10 +1,12 @@
 package com.jsonknights.gdg2019.domain;
 
-import lombok.Value;
+import lombok.Builder;
+import lombok.Data;
 
 import java.util.List;
 
-@Value
+@Data
+@Builder
 public class ResultDto {
     public int countOfLibrariesToSignUp;
 

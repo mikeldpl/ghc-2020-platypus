@@ -1,8 +1,10 @@
 package com.jsonknights.gdg2019.domain;
 
-import lombok.Value;
+import lombok.Builder;
+import lombok.Data;
 
-@Value
+@Data
+@Builder
 public class Book {
     int index;
     int score;

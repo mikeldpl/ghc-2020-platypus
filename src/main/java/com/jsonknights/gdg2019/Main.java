@@ -1,6 +1,5 @@
 package com.jsonknights.gdg2019;
 
-import com.jsonknights.gdg2019.domain.ResultDto;
 import com.jsonknights.gdg2019.domain.SourceDto;
 import org.apache.commons.lang3.tuple.Pair;
 import org.zeroturnaround.zip.ZipUtil;
@@ -32,13 +31,16 @@ public class Main {
             InOutManager inOutManager = new InOutManager(pathPair.getLeft(), pathPair.getRight());
 
             SourceDto sourceDto = inOutManager.readSource();
+            Enricher enricher = new Enricher(sourceDto.libraries);
+            enricher.enrichBooks();
+            enricher.enrichLibraries();
 
             System.out.println(sourceDto);
 
             //todo
-            final ResultDto resultDto = new ResultDto(-1, null);
+            // final ResultDto resultDto = new ResultDto(-1, null);
 
-            inOutManager.submitResult(resultDto);
+            // inOutManager.submitResult(resultDto);
         }
     }
 

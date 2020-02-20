@@ -1,10 +1,12 @@
 package com.jsonknights.gdg2019.domain;
 
-import lombok.Value;
+import lombok.Builder;
+import lombok.Data;
 
 import java.util.Set;
 
-@Value
+@Data
+@Builder
 public class LibrarySubmission {
     public int libraryIndex;
     public int countOfBooksSentAfterScanning;
