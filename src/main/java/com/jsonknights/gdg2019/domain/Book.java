@@ -6,4 +6,5 @@ import lombok.Value;
 public class Book {
     int index;
     int score;
+    double value;
 }
