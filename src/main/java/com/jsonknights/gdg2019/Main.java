@@ -1,5 +1,7 @@
 package com.jsonknights.gdg2019;
 
+import com.jsonknights.gdg2019.domain.LibrarySubmission;
+import com.jsonknights.gdg2019.domain.ResultDto;
 import com.jsonknights.gdg2019.domain.SourceDto;
 import org.apache.commons.lang3.tuple.Pair;
 import org.zeroturnaround.zip.ZipUtil;
@@ -9,6 +11,7 @@ import java.nio.file.Path;
 import java.nio.file.Paths;
 import java.util.Arrays;
 import java.util.List;
+import java.util.stream.Collectors;
 
 public class Main {
 
@@ -34,13 +37,22 @@ public class Main {
             Enricher enricher = new Enricher(sourceDto.libraries);
             enricher.enrichBooks();
             enricher.enrichLibraries();
+            final OutputProducer producer = new OutputProducer(sourceDto.libraries, sourceDto.numberOfDaysForScanning);
+            List<LibrarySubmission> submissions = producer.produce();
+            submissions = submissions.stream()
+                    .map(submission -> {
+                        submission.setCountOfBooksSentAfterScanning(submission.getIndexesOfSentBooks().size());
+                        return submission;
+                    })
+                    .filter(librarySubmission -> !librarySubmission.getIndexesOfSentBooks().isEmpty())
+                    .collect(Collectors.toList());
 
-            // System.out.println(sourceDto);
+            final ResultDto resultDto = ResultDto.builder()
+                    .countOfLibrariesToSignUp(submissions.size())
+                    .librarySubmissions(submissions)
+                    .build();
 
-            //todo
-            // final ResultDto resultDto = new ResultDto(-1, null);
-
-            // inOutManager.submitResult(resultDto);
+            inOutManager.submitResult(resultDto);
         }
     }
 
