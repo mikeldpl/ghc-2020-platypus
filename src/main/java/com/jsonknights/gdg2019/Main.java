@@ -33,6 +33,8 @@ public class Main {
 
             SourceDto sourceDto = inOutManager.readSource();
 
+            System.out.println(sourceDto);
+
             //todo
             final ResultDto resultDto = new ResultDto(-1, null);
 

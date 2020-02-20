@@ -2,6 +2,7 @@ package com.jsonknights.gdg2019;
 
 import com.jsonknights.gdg2019.domain.Book;
 import com.jsonknights.gdg2019.domain.Library;
+import com.jsonknights.gdg2019.domain.LibrarySubmission;
 import com.jsonknights.gdg2019.domain.ResultDto;
 import com.jsonknights.gdg2019.domain.SourceDto;
 
@@ -10,7 +11,6 @@ import java.nio.file.Files;
 import java.nio.file.Path;
 import java.util.ArrayList;
 import java.util.Arrays;
-import java.util.Collections;
 import java.util.List;
 import java.util.stream.Collectors;
 
@@ -25,16 +25,18 @@ public class InOutManager {
     }
 
     public void submitResult(ResultDto resultDto) throws IOException {
-//        List<Slide> slides = slideShow.getSlides();
-//        List<String> collect = Stream.concat(Stream.of(String.valueOf(slides.size())),
-//                                             slides.stream()
-//                                                     .map(slide -> slide.getPhotos().stream()
-//                                                             .map(Photo::getIndex)
-//                                                             .map(Object::toString)
-//                                                             .collect(Collectors.joining(" "))))
-//                .collect(Collectors.toList());
-        List<String> collect = Collections.emptyList();
-        Files.write(out, collect);
+        List<String> lines = new ArrayList<>();
+        lines.add(String.valueOf(resultDto.countOfLibrariesToSignUp));
+
+        for (LibrarySubmission submission : resultDto.librarySubmissions) {
+            lines.add(submission.libraryIndex + " " + submission.countOfBooksSentAfterScanning);
+            String indexes = submission.indexesOfSentBooks.stream()
+                    .map(Object::toString)
+                    .collect(Collectors.joining(" "));
+            lines.add(indexes);
+        }
+
+        Files.write(out, lines);
     }
 
     public SourceDto readSource() throws IOException {
