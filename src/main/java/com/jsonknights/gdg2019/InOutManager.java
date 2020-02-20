@@ -1,7 +1,9 @@
 package com.jsonknights.gdg2019;
 
-import com.jsonknights.gdg2019.domain.SourceDto;
+import com.jsonknights.gdg2019.domain.Book;
+import com.jsonknights.gdg2019.domain.Library;
 import com.jsonknights.gdg2019.domain.ResultDto;
+import com.jsonknights.gdg2019.domain.SourceDto;
 
 import java.io.IOException;
 import java.nio.file.Files;
@@ -9,8 +11,8 @@ import java.nio.file.Path;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Collections;
-import java.util.HashSet;
 import java.util.List;
+import java.util.stream.Collectors;
 
 public class InOutManager {
 
@@ -35,18 +37,41 @@ public class InOutManager {
         Files.write(out, collect);
     }
 
-    public List<SourceDto> readSource() throws IOException {
+    public SourceDto readSource() throws IOException {
         List<String> strings = Files.readAllLines(in);
         if (strings.size() <= 1) {
             throw new IllegalArgumentException("File contains incorrect count of lines");
         }
+        int[] taskRestrictions = parseNumbers(strings.remove(0));
+        int[] bookScores = parseNumbers(strings.remove(0));
 
-        int countOfPhotos = Integer.parseInt(strings.get(0));
-        List<SourceDto> sourceDtos = new ArrayList<>(countOfPhotos);
-//        for (int i = 1; i < strings.size(); i++) {
-//            sourceDtos.add(parsePhoto(strings.get(i), i - 1));
-//        }
-        return sourceDtos;
+        List<Library> libraries = new ArrayList<>();
+        for (int i = 0; i < strings.size() / 2; i += 2) {
+            int[] libraryInfo = parseNumbers(strings.get(i));
+            List<Book> books = Arrays.stream(parseNumbers(strings.get(i + 1)))
+                    .mapToObj(index -> new Book(index, bookScores[index]))
+                    .collect(Collectors.toList());
+            libraries.add(new Library(
+                    libraryInfo[0],
+                    libraryInfo[1],
+                    libraryInfo[2],
+                    books
+            ));
+        }
+
+        return new SourceDto(
+                taskRestrictions[0],
+                taskRestrictions[1],
+                taskRestrictions[2],
+                bookScores,
+                libraries
+        );
+    }
+
+    public int[] parseNumbers(String string) {
+        return Arrays.stream(string.split(" "))
+                .mapToInt(Integer::parseInt)
+                .toArray();
     }
 
 //    private SourceDto parsePhoto(String line, int index) {
