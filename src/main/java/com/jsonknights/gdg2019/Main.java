@@ -35,7 +35,7 @@ public class Main {
             enricher.enrichBooks();
             enricher.enrichLibraries();
 
-            System.out.println(sourceDto);
+            // System.out.println(sourceDto);
 
             //todo
             // final ResultDto resultDto = new ResultDto(-1, null);

@@ -54,6 +54,13 @@ public class InOutManager {
 
         List<Library> libraries = new ArrayList<>();
         for (int i = 0; i < strings.size(); i += 2) {
+            if ("".equals(strings.get(i))) {
+                if (strings.size() == i + 1) {
+                    continue;
+                } else {
+                    throw new IllegalArgumentException();
+                }
+            }
             List<Integer> libraryInfo = parseNumbers(strings.get(i));
             List<Book> libBooks = parseNumbers(strings.get(i + 1))
                     .stream()

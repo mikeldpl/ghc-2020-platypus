@@ -11,6 +11,7 @@ import java.util.Map;
 public class Enricher {
     Map<Book, Integer> occurrencesOfBooks;
     List<Library> libraries;
+    double sumOfBooksValues;
 
     public Enricher(List<Library> libraries) {
         this.libraries = libraries;
@@ -20,6 +21,7 @@ public class Enricher {
                     .distinct()
                     .forEach(this::incrementOcccurenceOfTheBook);
         }
+        sumOfBooksValues = computeSumOfBooksValues();
     }
 
     public void enrichBooks() {
@@ -27,7 +29,6 @@ public class Enricher {
     }
 
     public void enrichLibraries() {
-        double sumOfBooksValues = computeSumOfBooksValues();
         for (Library library : libraries) {
             int sumOfBooksInLibrary = library.books.size();
             double value = (sumOfBooksValues * library.numberOfBooksShippedPerDay) / sumOfBooksInLibrary;
@@ -39,7 +40,7 @@ public class Enricher {
     }
 
     private void incrementOcccurenceOfTheBook(Book book) {
-        occurrencesOfBooks.compute(book, (_u, count) -> count == null ? 0 : count++);
+        occurrencesOfBooks.compute(book, (_u, count) -> count == null ? 1 : count++);
     }
 
     private int computeValueOfTheBook(Book book) {
